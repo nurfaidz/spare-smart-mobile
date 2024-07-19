@@ -21,7 +21,12 @@ export default function Layout() {
 
   return (
     <TamaguiProvider config={config}>
-      <Stack initialRouteName="(tabs)/index" />
+      <Stack
+        initialRouteName="index"
+        screenOptions={{
+          headerShown: false,
+        }}
+      />
     </TamaguiProvider>
   );
 }
