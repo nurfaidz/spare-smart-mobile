@@ -21,7 +21,7 @@ export default function Layout() {
 
   return (
     <TamaguiProvider config={config}>
-      <Stack />
+      <Stack initialRouteName="(tabs)/index" />
     </TamaguiProvider>
   );
 }
