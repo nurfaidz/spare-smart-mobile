@@ -17,16 +17,16 @@ export default function Page() {
       <XStack $sm={{ flexDirection: 'column' }} paddingTop="$6" space style={styles.center}>
         <DemoCard
           size="$4"
-          width={200}
-          height={200}
+          width="$16"
+          height="$16"
           scale={0.8}
           hoverStyle={{ scale: 0.925 }}
           pressStyle={{ scale: 0.875 }}
         />
         <DemoCard1
           size="$4"
-          width={200}
-          height={200}
+          width="$16"
+          height="$16"
           scale={0.8}
           hoverStyle={{ scale: 0.925 }}
           pressStyle={{ scale: 0.875 }}
