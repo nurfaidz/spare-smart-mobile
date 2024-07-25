@@ -11,14 +11,6 @@ export default function Home() {
       .then((data) => setIncomingItems(data.data));
   }, []);
 
-  // console.log(incomingItems.forEach((item) => console.log(item)));
-  // if (!incomingItems) {
-  //   return (
-  //     <SafeAreaView>
-  //       <Spinner marginTop="$10" />
-  //     </SafeAreaView>
-  //   );
-  // }
   return (
     <SafeAreaView style={{ backgroundColor: '#F5F5F5', height: '100%' }}>
       <YStack>
@@ -28,7 +20,7 @@ export default function Home() {
       </YStack>
 
       <YStack py="$4" justifyContent="center" bg="#FFD564">
-        <Text textAlign="center" color="#333333" fontSize="$4" fontFamily="Inter">
+        <Text textAlign="center" color="#333333" fontSize="$4" fontFamily="$body">
           Barang Masuk Suku Cadang
         </Text>
       </YStack>
@@ -39,7 +31,7 @@ export default function Home() {
             {incomingItems.length === 0 ? (
               <Spinner size="large" color="black" />
             ) : (
-              incomingItems.map((item) => (
+              incomingItems.map((item: any) => (
                 <XStack
                   key={item.id}
                   p="$4"
