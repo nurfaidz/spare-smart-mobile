@@ -1,33 +1,32 @@
-import { color } from '@tamagui/themes';
 import { useRouter } from 'expo-router';
 import { SafeAreaView } from 'react-native';
-import { CardProps, Image, Paragraph, Button, H2, Card, XStack } from 'tamagui';
+import { CardProps, Image, Button, H2, Card, XStack } from 'tamagui';
 
 export default function Page() {
   return (
     <SafeAreaView
-      backgroundColor="#22668D"
       width="100%"
       style={{
         flex: 1,
         alignItems: 'center',
         justifyContent: 'center',
+        backgroundColor: '#F4F4F4',
       }}>
       <Image source={require('~/assets/logo/bengkel-ucok.png')} style={styles.logo} />
       <XStack $sm={{ flexDirection: 'column' }} paddingTop="$6" space style={styles.center}>
         <DemoCard
-          size="$4"
-          width="$16"
-          height="$16"
-          scale={0.8}
+          // size="$4"
+          width="$20"
+          height="$18"
+          // scale={0.8}
           hoverStyle={{ scale: 0.925 }}
           pressStyle={{ scale: 0.875 }}
         />
         <DemoCard1
-          size="$4"
-          width="$16"
-          height="$16"
-          scale={0.8}
+          // size="$4"
+          width="$20"
+          height="$18"
+          // scale={0.8}
           hoverStyle={{ scale: 0.925 }}
           pressStyle={{ scale: 0.875 }}
         />
@@ -40,21 +39,18 @@ export function DemoCard(props: CardProps) {
   const router = useRouter();
   return (
     <SafeAreaView>
-      <Card elevate size="$4" bordered {...props} style={styles.cardBackground}>
+      <Card
+        elevate
+        size="$4"
+        bordered
+        {...props}
+        style={styles.cardBackground}
+        onPress={() => router.push('(incoming)')}>
         <Card.Header padded>
           <H2 style={styles.titleHeading}>Barang Masuk</H2>
-          {/* <Paragraph theme="alt2">Now available</Paragraph> */}
         </Card.Header>
         <Image source={incoming} style={styles.incoming} />
-        <Card.Footer padded>
-          <Button
-            borderRadius="$7"
-            style={styles.button}
-            hoverStyle={{ backgroundColor: '#FDE49E' }}
-            onPress={() => router.push('(incoming)')}>
-            Masuk Sini
-          </Button>
-        </Card.Footer>
+        <Card.Footer padded />
         <Card.Background>
           <Image
             resizeMode="contain"
@@ -71,19 +67,21 @@ export function DemoCard(props: CardProps) {
 }
 
 export function DemoCard1(props: CardProps) {
+  const router = useRouter();
   return (
     <SafeAreaView>
-      <Card elevate size="$4" bordered {...props} style={styles.cardBackground}>
+      <Card
+        elevate
+        size="$4"
+        bordered
+        {...props}
+        style={styles.cardBackground}
+        onPress={() => router.push('(outgoing)')}>
         <Card.Header padded>
           <H2 style={styles.titleHeading}>Barang Keluar</H2>
-          {/* <Paragraph theme="alt2">Now available</Paragraph> */}
         </Card.Header>
         <Image source={outgoing} style={styles.outgoing} />
-        <Card.Footer padded>
-          <Button borderRadius="$7" style={styles.button}>
-            Masuk Sini
-          </Button>
-        </Card.Footer>
+        <Card.Footer padded />
         <Card.Background>
           <Image
             resizeMode="contain"
@@ -104,21 +102,20 @@ const outgoing = require('~/assets/img/outgoing.png');
 
 const styles = {
   titleHeading: {
-    fontFamily: 'InterBold',
+    fontFamily: 'Bernard MT Condensed',
     fontSize: 24,
-    color: 'black',
+    color: '#2F4F4F',
+    alignSelf: 'center',
   },
   incoming: {
-    width: 100,
-    height: 100,
+    width: 130,
+    height: 130,
     alignSelf: 'center',
-    marginLeft: 80,
   },
   outgoing: {
-    width: 100,
-    height: 100,
+    width: 130,
+    height: 130,
     alignSelf: 'center',
-    marginLeft: 80,
   },
   center: {
     alignItems: 'center',
@@ -127,21 +124,20 @@ const styles = {
   button: {
     width: 120,
     height: 35,
-    backgroundColor: '#FEB941',
+    backgroundColor: '#8B0000',
     marginTop: 5,
     padding: 5,
-    color: 'black',
   },
   cardBackground: {
-    backgroundColor: '#e8cb96',
-    borderColor: 'gray',
+    backgroundColor: '#FFD564',
+    borderColor: '#FFD564',
   },
   logo: {
-    width: '100%',
-    height: 140,
-    alignSelf: 'center',
-    marginTop: 25,
-    justifyContent: 'center',
-    marginRight: 37,
+    width: '55%',
+    height: 100,
+    // alignSelf: 'center',
+    // marginTop: 25,
+    // justifyContent: 'center',
+    // marginRight: 37,
   },
 };
