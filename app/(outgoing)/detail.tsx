@@ -6,12 +6,12 @@ import { Text, Image, XStack, YStack, ScrollView, Spinner, Separator } from 'tam
 
 export default function Home() {
   const param = useLocalSearchParams();
-  const [incomingItem, setIncomingItem] = useState<any>([]);
+  const [outgoingItem, setOutgoingItem] = useState<any>([]);
 
   useEffect(() => {
-    fetch('http://192.168.1.14:8000/api/incoming-item/show/' + param.id)
+    fetch('http://192.168.1.14:8000/api/outgoing-item/show/' + param.id)
       .then((response) => response.json())
-      .then((data) => setIncomingItem(data.data));
+      .then((data) => setOutgoingItem(data.data));
   }, []);
 
   return (
@@ -29,23 +29,23 @@ export default function Home() {
       </YStack>
 
       <ScrollView style={styles.scrollContainer}>
-        {incomingItem.length === 0 ? (
+        {outgoingItem.length === 0 ? (
           <Spinner size="large" color="black" />
         ) : (
           <View style={styles.card}>
-            <DetailItem label="Nama Suku Cadang" value={incomingItem.spare_part} />
+            <DetailItem label="Nama Suku Cadang" value={outgoingItem.spare_part} />
             <Separator borderColor="$gray9Light" />
-            <DetailItem label="Jumlah" value={incomingItem.quantity} />
+            <DetailItem label="Jumlah" value={outgoingItem.quantity} />
             <Separator borderColor="$gray9Light" />
-            <DetailItem label="Tanggal Barang Masuk" value={incomingItem.incoming_at} />
+            <DetailItem label="Tanggal Barang Masuk" value={outgoingItem.incoming_at} />
             <Separator borderColor="$gray9Light" />
-            <DetailItem label="Catatan" value={incomingItem.note} />
+            <DetailItem label="Catatan" value={outgoingItem.note} />
             <Separator borderColor="$gray9Light" />
-            <DetailItem label="Status" value={incomingItem.status} />
+            <DetailItem label="Status" value={outgoingItem.status} />
             <Separator borderColor="$gray9Light" />
             <DetailItem
               label="Catatan Pembatalan"
-              value={incomingItem.note_cancellation || 'Tidak ada catatan pembatalan'}
+              value={outgoingItem.note_cancellation || 'Tidak ada catatan pembatalan'}
             />
           </View>
         )}
