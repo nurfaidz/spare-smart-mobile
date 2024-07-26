@@ -1,3 +1,4 @@
+import { useRouter } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 import { Dimensions, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -5,8 +6,10 @@ import { Text, Image, XStack, YStack, ScrollView, Spinner } from 'tamagui';
 
 export default function Home() {
   const [incomingItems, setIncomingItems] = useState<any>([]);
+  const router = useRouter();
+
   useEffect(() => {
-    fetch('http://192.168.1.11:8000/api/incoming-item')
+    fetch('http://192.168.1.14:8000/api/incoming-item')
       .then((response) => response.json())
       .then((data) => setIncomingItems(data.data));
   }, []);
@@ -33,6 +36,12 @@ export default function Home() {
             ) : (
               incomingItems.map((item: any) => (
                 <XStack
+                  onPress={() =>
+                    router.push({
+                      pathname: '(incoming)/detail',
+                      params: { id: item.id },
+                    })
+                  }
                   key={item.id}
                   p="$4"
                   bg="$gray3Light"
@@ -40,7 +49,9 @@ export default function Home() {
                   borderWidth="$0.5"
                   borderColor="#E0E0E0"
                   justifyContent="space-between"
-                  alignItems="center">
+                  alignItems="center"
+                  hoverStyle={{ scale: 0.925 }}
+                  pressStyle={{ scale: 0.875 }}>
                   <YStack>
                     <Text fontSize="$5" color="#333333">
                       {item.code}

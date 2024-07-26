@@ -1,9 +1,16 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Dimensions, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Text, Image, XStack, YStack, ScrollView } from 'tamagui';
+import { Text, Image, XStack, YStack, ScrollView, Spinner } from 'tamagui';
 
 export default function Home() {
+  const [outgoingItems, setOutgoingItems] = useState<any>([]);
+  useEffect(() => {
+    fetch('http://192.168.1.14:8000/api/outgoing-item')
+      .then((response) => response.json())
+      .then((data) => setOutgoingItems(data.data));
+  }, []);
+
   return (
     <SafeAreaView style={{ backgroundColor: '#F5F5F5', height: '100%' }}>
       <YStack>
@@ -13,7 +20,7 @@ export default function Home() {
       </YStack>
 
       <YStack py="$4" justifyContent="center" bg="#FFD564">
-        <Text textAlign="center" color="#333333" fontSize="$4" fontFamily="Inter">
+        <Text textAlign="center" color="#333333" fontSize="$4" fontFamily="$body">
           Barang Keluar Suku Cadang
         </Text>
       </YStack>
@@ -21,77 +28,60 @@ export default function Home() {
       <ScrollView bg="#FFD564">
         <YStack px="$6" gap="$4" py="$2">
           <YStack gap="$4">
-            <XStack
-              p="$4"
-              bg="$gray3Light"
-              borderRadius="$4"
-              borderWidth="$0.5"
-              borderColor="#E0E0E0"
-              justifyContent="space-between"
-              alignItems="center">
-              <YStack>
-                <Text fontSize="$5" color="#333333">
-                  PPLO9012
-                </Text>
-                <Text fontSize="$2" color="#666666">
-                  Shock Breaker YMH 12
-                </Text>
-                <Text fontSize="$2" color="#666666">
-                  23 Juli 2024
-                </Text>
-              </YStack>
-              <YStack gap="$2">
-                <Text textAlign="right" fontSize="$2">
-                  Rp 2.100.000
-                </Text>
-                <View py="$1" px="$3" bg="$green8Light" borderRadius="$4">
-                  <Text textAlign="center" fontSize="$2" color="#333333">
-                    19 Qty
-                  </Text>
-                </View>
-                <View py="$1" px="$3" bg="$green8Light" borderRadius="$4">
-                  <Text textAlign="center" color="green" fontSize="$2">
-                    Aktif
-                  </Text>
-                </View>
-              </YStack>
-            </XStack>
+            {outgoingItems.length === 0 ? (
+              <Spinner size="large" color="black" />
+            ) : (
+              outgoingItems.map((item: any) => (
+                <XStack
+                  key={item.id}
+                  p="$4"
+                  bg="$gray3Light"
+                  borderRadius="$4"
+                  borderWidth="$0.5"
+                  borderColor="#E0E0E0"
+                  justifyContent="space-between"
+                  alignItems="center">
+                  <YStack>
+                    <Text fontSize="$5" color="#333333">
+                      {item.code}
+                    </Text>
+                    <Text fontSize="$2" color="#666666">
+                      {item.spare_part}
+                    </Text>
+                    <Text fontSize="$2" color="#666666">
+                      {item.outgoing_at}
+                    </Text>
+                  </YStack>
+                  <YStack gap="$2">
+                    <Text textAlign="right" fontSize="$2">
+                      Rp {item.total_price}
+                    </Text>
+                    <View py="$1" px="$3" bg="$green8Light" borderRadius="$4">
+                      <Text textAlign="center" fontSize="$2" color="#333333">
+                        {item.quantity} Qty
+                      </Text>
+                    </View>
+                    <View py="$1" px="$3" bg="$green8Light" borderRadius="$4">
+                      {item.status === 'Aktif' ? (
+                        <Text textAlign="center" fontSize="$2" color="green">
+                          {item.status}
+                        </Text>
+                      ) : (
+                        <Text textAlign="center" fontSize="$2" color="red">
+                          {item.status}
+                        </Text>
+                      )}
+                    </View>
+                  </YStack>
+                </XStack>
+              ))
+            )}
           </YStack>
         </YStack>
       </ScrollView>
     </SafeAreaView>
   );
 }
-
-const DATA = [
-  {
-    id: '1',
-    code: 'PPLO9012',
-    name: 'Shock Breaker YMH 12',
-    date: '23 Juli 2024',
-    price: 'Rp 2.100.000',
-    qty: '19',
-    status: 'Aktif',
-  },
-  {
-    id: '2',
-    code: 'PPLO9013',
-    name: 'Filter Karbu YMH 002',
-    date: '13 Oktober 2024',
-    price: 'Rp 2.200.000',
-    qty: '20',
-    status: 'Aktif',
-  },
-  {
-    id: '3',
-    code: 'PPLO9014',
-    name: 'Kampas Rem YMH 003',
-    date: '14 Oktober 2024',
-    price: 'Rp 2.300.000',
-    qty: '21',
-    status: 'Aktif',
-  },
-];
 
 const styles = {
   titleHeading: {
