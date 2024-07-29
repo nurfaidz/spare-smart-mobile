@@ -9,7 +9,7 @@ export default function Home() {
   const [outgoingItem, setOutgoingItem] = useState<any>([]);
 
   useEffect(() => {
-    fetch('http://192.168.1.14:8000/api/outgoing-item/show/' + param.id)
+    fetch('http://192.168.1.28:8000/api/outgoing-item/show/' + param.id)
       .then((response) => response.json())
       .then((data) => setOutgoingItem(data.data));
   }, []);
@@ -54,7 +54,7 @@ export default function Home() {
   );
 }
 
-const DetailItem = ({ label, value }) => (
+const DetailItem = ({ label, value }: { label: string; value: string }) => (
   <XStack justifyContent="space-between" py="$2" flexDirection="column">
     <Text fontSize="$3" color="#333" fontWeight="bold">
       {label}:

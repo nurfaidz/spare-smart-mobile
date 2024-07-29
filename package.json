@@ -17,7 +17,6 @@
   "dependencies": {
     "@expo/vector-icons": "^14.0.0",
     "@react-navigation/native": "^6.1.7",
-    "@shopify/flash-list": "1.6.4",
     "@tamagui/font-inter": "1.74.8",
     "@tamagui/react-native-media-driver": "1.74.8",
     "@tamagui/shorthands": "1.74.8",
