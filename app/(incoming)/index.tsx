@@ -1,5 +1,6 @@
 import { Ionicons } from '@expo/vector-icons';
-import { useRouter } from 'expo-router';
+import { Toast } from '@tamagui/toast';
+import { useLocalSearchParams, useRouter } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 import { Dimensions, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -8,6 +9,7 @@ import { Text, Image, XStack, YStack, ScrollView, Spinner, Button } from 'tamagu
 export default function Home() {
   const [incomingItems, setIncomingItems] = useState<any>([]);
   const router = useRouter();
+  const param = useLocalSearchParams();
 
   useEffect(() => {
     fetch('http://192.168.1.28:8000/api/incoming-item')
@@ -22,6 +24,21 @@ export default function Home() {
           <Image source={require('~/assets/logo/bengkel-ucok.png')} style={styles.logo} />
         </View>
       </YStack>
+
+      {param.success?.toString() === 'true' && (
+        <Toast
+          duration={3000}
+          animation="100ms"
+          enterStyle={{ x: -20, opacity: 0 }}
+          exitStyle={{ x: -20, opacity: 0 }}
+          opacity={1}
+          x={0}>
+          <YStack>
+            <Toast.Title>Sukses</Toast.Title>
+            <Toast.Description>Barang masuk suku cadang berhasil ditambahkan</Toast.Description>
+          </YStack>
+        </Toast>
+      )}
 
       <YStack py="$4" justifyContent="center" bg="#FFD564">
         <Text textAlign="center" color="#333333" fontSize="$4" fontFamily="$body">

@@ -1,6 +1,7 @@
 import { useRouter } from 'expo-router';
+import React from 'react';
 import { SafeAreaView } from 'react-native';
-import { CardProps, Image, Button, H2, Card, XStack } from 'tamagui';
+import { CardProps, Image, H2, Card, XStack } from 'tamagui';
 
 export default function Page() {
   return (
@@ -102,7 +103,6 @@ const outgoing = require('~/assets/img/outgoing.png');
 
 const styles = {
   titleHeading: {
-    fontFamily: 'Bernard MT Condensed',
     fontSize: 24,
     color: '#2F4F4F',
     alignSelf: 'center',
@@ -135,9 +135,5 @@ const styles = {
   logo: {
     width: '55%',
     height: 100,
-    // alignSelf: 'center',
-    // marginTop: 25,
-    // justifyContent: 'center',
-    // marginRight: 37,
   },
 };
