@@ -1,6 +1,5 @@
 import { Ionicons } from '@expo/vector-icons';
-import { Toast } from '@tamagui/toast';
-import { useLocalSearchParams, useRouter } from 'expo-router';
+import { useRouter } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 import { Dimensions, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
@@ -9,7 +8,6 @@ import { Text, Image, XStack, YStack, ScrollView, Spinner, Button } from 'tamagu
 export default function Home() {
   const [incomingItems, setIncomingItems] = useState<any>([]);
   const router = useRouter();
-  const param = useLocalSearchParams();
 
   useEffect(() => {
     fetch('http://192.168.1.56:8000/api/incoming-item')
@@ -20,25 +18,21 @@ export default function Home() {
   return (
     <SafeAreaView style={{ backgroundColor: '#F5F5F5', height: '100%' }}>
       <YStack>
-        <View>
+        <View flexDirection="row" justifyContent="space-between">
           <Image source={require('~/assets/logo/bengkel-ucok.png')} style={styles.logo} />
+          <XStack
+            alignItems="center"
+            paddingRight="$3"
+            onPress={() => router.push('/')}
+            hoverStyle={{ scale: 0.925 }}
+            pressStyle={{ scale: 0.875 }}>
+            <Ionicons name="arrow-back" size={24} color="black" padding={10} alignSelf="center" />
+            <Text fontSize="$4" fontFamily="$body" alignSelf="center">
+              Kembali
+            </Text>
+          </XStack>
         </View>
       </YStack>
-
-      {param.success?.toString() === 'true' && (
-        <Toast
-          duration={3000}
-          animation="100ms"
-          enterStyle={{ x: -20, opacity: 0 }}
-          exitStyle={{ x: -20, opacity: 0 }}
-          opacity={1}
-          x={0}>
-          <YStack>
-            <Toast.Title>Sukses</Toast.Title>
-            <Toast.Description>Barang masuk suku cadang berhasil ditambahkan</Toast.Description>
-          </YStack>
-        </Toast>
-      )}
 
       <YStack py="$4" justifyContent="center" bg="#FFD564">
         <Text textAlign="center" color="#333333" fontSize="$4" fontFamily="$body">
@@ -106,18 +100,20 @@ export default function Home() {
               ))
             )}
           </YStack>
-          <View style={styles.buttonContainer}>
-            <Button
-              style={styles.button}
-              hoverStyle={styles.buttonHover}
-              pressStyle={styles.buttonPress}
-              onPress={() => router.push('(incoming)/create')}>
-              <Ionicons name="add-circle-outline" size={20} color="black" />
-              <Text style={styles.buttonText}>Tambah</Text>
-            </Button>
-          </View>
         </YStack>
       </ScrollView>
+      <YStack justifyContent="center" bg="#FFD564">
+        <View style={styles.buttonContainer}>
+          <Button
+            style={styles.button}
+            hoverStyle={styles.buttonHover}
+            pressStyle={styles.buttonPress}
+            onPress={() => router.push('(incoming)/create')}>
+            <Ionicons name="add-circle-outline" size={20} color="black" />
+            <Text style={styles.buttonText}>Tambah</Text>
+          </Button>
+        </View>
+      </YStack>
     </SafeAreaView>
   );
 }
@@ -133,7 +129,6 @@ const styles = {
   logo: {
     width: '30%',
     height: 70,
-    // marginTop: 50,
   },
   center: {
     alignItems: 'center',
@@ -141,17 +136,10 @@ const styles = {
   },
   buttonContainer: {
     alignItems: 'center',
-    marginTop: 10,
+    padding: 10,
   },
   button: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    textAlign: 'center',
     backgroundColor: '#FFFFFF',
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-    borderRadius: 8,
     elevation: 5,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },

@@ -2,9 +2,10 @@ import { Ionicons } from '@expo/vector-icons';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { useRouter } from 'expo-router';
 import React, { useEffect, useState } from 'react';
-import { SafeAreaView, StyleSheet, TextInput, TouchableOpacity, View } from 'react-native';
+import { View, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
-import { Button, Image, ScrollView, Spinner, Text, XStack, YStack } from 'tamagui';
+import { SafeAreaView } from 'react-native-safe-area-context';
+import { Text, Image, YStack, ScrollView, Button, Spinner, XStack } from 'tamagui';
 
 export default function AddOutgoingItem() {
   const [sparePartId, setSparePartId] = useState('');
@@ -69,8 +70,19 @@ export default function AddOutgoingItem() {
   return (
     <SafeAreaView style={{ backgroundColor: '#F5F5F5', height: '100%' }}>
       <YStack>
-        <View>
+        <View flexDirection="row" justifyContent="space-between">
           <Image source={require('~/assets/logo/bengkel-ucok.png')} style={styles.logo} />
+          <XStack
+            alignItems="center"
+            paddingRight="$3"
+            onPress={() => router.push('/')}
+            hoverStyle={{ scale: 0.925 }}
+            pressStyle={{ scale: 0.875 }}>
+            <Ionicons name="arrow-back" size={24} color="black" padding={10} alignSelf="center" />
+            <Text fontSize="$4" fontFamily="$body" alignSelf="center">
+              Kembali
+            </Text>
+          </XStack>
         </View>
       </YStack>
 
@@ -159,6 +171,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     color: '#333333',
     fontWeight: 'bold',
+    marginBottom: 8,
   },
   input: {
     height: 40,

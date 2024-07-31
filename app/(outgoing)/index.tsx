@@ -17,8 +17,19 @@ export default function Home() {
   return (
     <SafeAreaView style={{ backgroundColor: '#F5F5F5', height: '100%' }}>
       <YStack>
-        <View>
+        <View flexDirection="row" justifyContent="space-between">
           <Image source={require('~/assets/logo/bengkel-ucok.png')} style={styles.logo} />
+          <XStack
+            alignItems="center"
+            paddingRight="$3"
+            onPress={() => router.push('/')}
+            hoverStyle={{ scale: 0.925 }}
+            pressStyle={{ scale: 0.875 }}>
+            <Ionicons name="arrow-back" size={24} color="black" padding={10} alignSelf="center" />
+            <Text fontSize="$4" fontFamily="$body" alignSelf="center">
+              Kembali
+            </Text>
+          </XStack>
         </View>
       </YStack>
 
@@ -88,18 +99,20 @@ export default function Home() {
               ))
             )}
           </YStack>
-          <View style={styles.buttonContainer}>
-            <Button
-              style={styles.button}
-              hoverStyle={styles.buttonHover}
-              pressStyle={styles.buttonPress}
-              onPress={() => router.push({ pathname: '(outgoing)/create' })}>
-              <Ionicons name="add-circle-outline" size={20} color="black" />
-              <Text style={styles.buttonText}>Tambah</Text>
-            </Button>
-          </View>
         </YStack>
       </ScrollView>
+      <YStack justifyContent="center" bg="#FFD564">
+        <View style={styles.buttonContainer}>
+          <Button
+            style={styles.button}
+            hoverStyle={styles.buttonHover}
+            pressStyle={styles.buttonPress}
+            onPress={() => router.push('(outgoing)/create')}>
+            <Ionicons name="add-circle-outline" size={20} color="black" />
+            <Text style={styles.buttonText}>Tambah</Text>
+          </Button>
+        </View>
+      </YStack>
     </SafeAreaView>
   );
 }
@@ -122,17 +135,10 @@ const styles = {
   },
   buttonContainer: {
     alignItems: 'center',
-    marginTop: 10,
+    padding: 10,
   },
   button: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'center',
-    textAlign: 'center',
     backgroundColor: '#FFFFFF',
-    paddingHorizontal: 20,
-    paddingVertical: 10,
-    borderRadius: 8,
     elevation: 5,
     shadowColor: '#000',
     shadowOffset: { width: 0, height: 2 },

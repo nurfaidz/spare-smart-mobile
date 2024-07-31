@@ -70,8 +70,19 @@ export default function AddIncomingItem() {
   return (
     <SafeAreaView style={{ backgroundColor: '#F5F5F5', height: '100%' }}>
       <YStack>
-        <View>
+        <View flexDirection="row" justifyContent="space-between">
           <Image source={require('~/assets/logo/bengkel-ucok.png')} style={styles.logo} />
+          <XStack
+            alignItems="center"
+            paddingRight="$3"
+            onPress={() => router.push('(incoming)')}
+            hoverStyle={{ scale: 0.925 }}
+            pressStyle={{ scale: 0.875 }}>
+            <Ionicons name="arrow-back" size={24} color="black" padding={10} alignSelf="center" />
+            <Text fontSize="$4" fontFamily="$body" alignSelf="center">
+              Kembali
+            </Text>
+          </XStack>
         </View>
       </YStack>
 

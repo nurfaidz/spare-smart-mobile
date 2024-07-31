@@ -22,7 +22,7 @@
     "@tamagui/react-native-media-driver": "1.74.8",
     "@tamagui/shorthands": "1.74.8",
     "@tamagui/themes": "1.74.8",
-    "@tamagui/toast": "^1.105.4",
+    "@tamagui/toast": "^1.105.8",
     "burnt": "^0.12.2",
     "expo": "^51.0.21",
     "expo-constants": "~16.0.1",
