@@ -1,9 +1,10 @@
 import { useRouter } from 'expo-router';
 import React from 'react';
 import { SafeAreaView } from 'react-native';
-import { CardProps, Image, H2, Card, XStack } from 'tamagui';
+import { CardProps, Image, H2, Card, XStack, Button } from 'tamagui';
 
 export default function Page() {
+  const router = useRouter();
   return (
     <SafeAreaView
       width="100%"
@@ -32,6 +33,12 @@ export default function Page() {
           pressStyle={{ scale: 0.875 }}
         />
       </XStack>
+      <Button
+        style={styles.button}
+        onPress={() => router.push('(auth)/sign-in')}
+        hoverStyle={{ scale: 0.925 }}>
+        Sign In
+      </Button>
     </SafeAreaView>
   );
 }
