@@ -2,12 +2,11 @@ import { Ionicons } from '@expo/vector-icons';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { useRouter } from 'expo-router';
 import React, { useEffect, useState } from 'react';
-import { View, StyleSheet, TextInput, TouchableOpacity } from 'react-native';
+import { SafeAreaView, StyleSheet, TextInput, TouchableOpacity, View } from 'react-native';
 import RNPickerSelect from 'react-native-picker-select';
-import { SafeAreaView } from 'react-native-safe-area-context';
-import { Text, Image, YStack, ScrollView, Button, Spinner, XStack } from 'tamagui';
+import { Button, Image, ScrollView, Spinner, Text, XStack, YStack } from 'tamagui';
 
-export default function AddIncomingItem() {
+export default function AddOutgoingItem() {
   const [sparePartId, setSparePartId] = useState('');
   const [quantity, setQuantity] = useState('');
   const [note, setNote] = useState('');
@@ -16,6 +15,8 @@ export default function AddIncomingItem() {
   const [date, setDate] = useState(new Date());
   const [mode, setMode] = useState('date');
   const [show, setShow] = useState(false);
+
+  const [spareParts, setSpareParts] = useState<any>([]);
 
   const onChange = (event: any, selectedDate: Date) => {
     const currentDate = selectedDate || date;
@@ -37,10 +38,10 @@ export default function AddIncomingItem() {
       spare_part_id: sparePartId,
       quantity,
       note,
-      incoming_at: date.toISOString().split('T')[0],
+      outgoing_at: date.toISOString().split('T')[0],
     };
 
-    fetch('http://192.168.1.56:8000/api/incoming-item/store', {
+    fetch('http://192.168.1.56:8000/api/outgoing-item/store', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -50,7 +51,7 @@ export default function AddIncomingItem() {
       .then((response) => response.json())
       .then((result) => {
         console.log('Success:', result);
-        router.push('(incoming)');
+        router.push('(outgoing)');
         router.setParams({ success: 'true' });
       })
       .catch((error) => {
@@ -58,11 +59,9 @@ export default function AddIncomingItem() {
       });
   };
 
-  const [spareParts, setSpareParts] = useState<any>([]);
-
   // Get All Spare Parts
   useEffect(() => {
-    fetch('http://192.168.1.56:8000/api/incoming-item/create')
+    fetch('http://192.168.1.56:8000/api/outgoing-item/create')
       .then((response) => response.json())
       .then((data) => setSpareParts(data.data));
   }, []);
@@ -76,8 +75,8 @@ export default function AddIncomingItem() {
       </YStack>
 
       <YStack py="$4" justifyContent="center" bg="#FFD564">
-        <Text textAlign="center" color="#333333" fontSize="$4" fontFamily="$body">
-          Tambah Barang Masuk Suku Cadang
+        <Text fontSize="$4" textAlign="center" color="#333333" fontFamily="$body">
+          Tambah Barang Keluar Suku Cadang
         </Text>
       </YStack>
 
@@ -111,14 +110,14 @@ export default function AddIncomingItem() {
               />
             </View>
             <View>
-              <Text style={styles.label}>Tanggal Masuk</Text>
+              <Text style={styles.label}>Tanggal Keluar</Text>
               <TouchableOpacity onPress={showDatepicker} style={styles.dateButton}>
                 <XStack justifyContent="space-between" alignItems="center" gap="$2">
                   <Text style={styles.dateButtonText}>Pilih Tanggal</Text>
                   <Ionicons name="calendar" size={24} color="#333333" />
                 </XStack>
               </TouchableOpacity>
-              <Text style={styles.dateText}>Tanggal Masuk: {date.toLocaleDateString()}</Text>
+              <Text style={styles.dateText}>Tanggal yang dipilih: {date.toLocaleDateString()}</Text>
               {show && <DateTimePicker value={date} mode={mode} is24Hour onChange={onChange} />}
             </View>
             <View>
@@ -159,7 +158,7 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 16,
     color: '#333333',
-    marginBottom: 8,
+    fontWeight: 'bold',
   },
   input: {
     height: 40,

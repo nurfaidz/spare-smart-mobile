@@ -9,7 +9,7 @@ export default function Home() {
   const [incomingItem, setIncomingItem] = useState<any>([]);
 
   useEffect(() => {
-    fetch('http://192.168.1.28:8000/api/incoming-item/show/' + param.id)
+    fetch('http://192.168.1.56:8000/api/incoming-item/show/' + param.id)
       .then((response) => response.json())
       .then((data) => setIncomingItem(data.data));
   }, []);

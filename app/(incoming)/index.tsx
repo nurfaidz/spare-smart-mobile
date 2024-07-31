@@ -12,7 +12,7 @@ export default function Home() {
   const param = useLocalSearchParams();
 
   useEffect(() => {
-    fetch('http://192.168.1.28:8000/api/incoming-item')
+    fetch('http://192.168.1.56:8000/api/incoming-item')
       .then((response) => response.json())
       .then((data) => setIncomingItems(data.data));
   }, []);
@@ -111,7 +111,7 @@ export default function Home() {
               style={styles.button}
               hoverStyle={styles.buttonHover}
               pressStyle={styles.buttonPress}
-              onPress={() => router.push('/create')}>
+              onPress={() => router.push('(incoming)/create')}>
               <Ionicons name="add-circle-outline" size={20} color="black" />
               <Text style={styles.buttonText}>Tambah</Text>
             </Button>

@@ -1,14 +1,15 @@
+import { Ionicons } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 import { Dimensions, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import { Text, Image, XStack, YStack, ScrollView, Spinner } from 'tamagui';
+import { Text, Image, XStack, YStack, ScrollView, Spinner, Button } from 'tamagui';
 
 export default function Home() {
   const [outgoingItems, setOutgoingItems] = useState<any>([]);
   const router = useRouter();
   useEffect(() => {
-    fetch('http://192.168.1.28:8000/api/outgoing-item')
+    fetch('http://192.168.1.56:8000/api/outgoing-item')
       .then((response) => response.json())
       .then((data) => setOutgoingItems(data.data));
   }, []);
@@ -87,6 +88,16 @@ export default function Home() {
               ))
             )}
           </YStack>
+          <View style={styles.buttonContainer}>
+            <Button
+              style={styles.button}
+              hoverStyle={styles.buttonHover}
+              pressStyle={styles.buttonPress}
+              onPress={() => router.push({ pathname: '(outgoing)/create' })}>
+              <Ionicons name="add-circle-outline" size={20} color="black" />
+              <Text style={styles.buttonText}>Tambah</Text>
+            </Button>
+          </View>
         </YStack>
       </ScrollView>
     </SafeAreaView>
@@ -108,5 +119,34 @@ const styles = {
   center: {
     alignItems: 'center',
     justifyContent: 'center',
+  },
+  buttonContainer: {
+    alignItems: 'center',
+    marginTop: 10,
+  },
+  button: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    textAlign: 'center',
+    backgroundColor: '#FFFFFF',
+    paddingHorizontal: 20,
+    paddingVertical: 10,
+    borderRadius: 8,
+    elevation: 5,
+    shadowColor: '#000',
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+  },
+  buttonHover: {
+    backgroundColor: '#FFD564',
+  },
+  buttonPress: {
+    backgroundColor: '#FFC107',
+  },
+  buttonText: {
+    color: '#000000',
+    marginLeft: 8,
   },
 };

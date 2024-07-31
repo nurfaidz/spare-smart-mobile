@@ -9,7 +9,7 @@ export default function Home() {
   const [outgoingItem, setOutgoingItem] = useState<any>([]);
 
   useEffect(() => {
-    fetch('http://192.168.1.28:8000/api/outgoing-item/show/' + param.id)
+    fetch('http://192.168.1.56:8000/api/outgoing-item/show/' + param.id)
       .then((response) => response.json())
       .then((data) => setOutgoingItem(data.data));
   }, []);
