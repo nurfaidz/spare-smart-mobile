@@ -9,7 +9,7 @@ export default function Home() {
   const [outgoingItems, setOutgoingItems] = useState<any>([]);
   const router = useRouter();
   useEffect(() => {
-    fetch('http://192.168.1.56:8000/api/outgoing-item')
+    fetch('http://192.168.1.23:8000/api/outgoing-item')
       .then((response) => response.json())
       .then((data) => setOutgoingItems(data.data));
   }, []);

@@ -42,7 +42,7 @@ export default function AddOutgoingItem() {
       outgoing_at: date.toISOString().split('T')[0],
     };
 
-    fetch('http://192.168.1.56:8000/api/outgoing-item/store', {
+    fetch('http://192.168.1.23:8000/api/outgoing-item/store', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -62,7 +62,7 @@ export default function AddOutgoingItem() {
 
   // Get All Spare Parts
   useEffect(() => {
-    fetch('http://192.168.1.56:8000/api/outgoing-item/create')
+    fetch('http://192.168.1.23:8000/api/outgoing-item/create')
       .then((response) => response.json())
       .then((data) => setSpareParts(data.data));
   }, []);

@@ -10,7 +10,7 @@ export default function Home() {
   const router = useRouter();
 
   useEffect(() => {
-    fetch('http://192.168.1.56:8000/api/incoming-item')
+    fetch('http://192.168.1.23:8000/api/incoming-item')
       .then((response) => response.json())
       .then((data) => setIncomingItems(data.data));
   }, []);

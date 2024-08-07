@@ -1,11 +1,37 @@
+import { useRouter } from 'expo-router';
 import React, { useState } from 'react';
 import { StyleSheet, TextInput } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Button, Card, CardFooter, Image, Text, View, XStack } from 'tamagui';
 
 export default function SignIn() {
-  const [username, setUsername] = useState('');
+  const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const router = useRouter();
+
+  const handleSignIn = () => {
+    const data = {
+      email,
+      password,
+    };
+
+    fetch('http://192.168.1.23:8000/api/auth/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data),
+    })
+      .then((response) => response.json())
+      .then((result) => {
+        console.log('Success:', result);
+        router.push('index');
+        router.setParams({ success: 'true' });
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+      });
+  };
 
   return (
     <SafeAreaView
@@ -33,13 +59,13 @@ export default function SignIn() {
           </Card.Header>
           <View paddingHorizontal={20}>
             <Text style={styles.label} p="$1">
-              Username atau Email
+              Email
             </Text>
             <TextInput
               style={styles.input}
-              value={username}
-              onChangeText={setUsername}
-              placeholder="Masukkan Username atau Email"
+              value={email}
+              onChangeText={setEmail}
+              placeholder="Masukkan Email"
               textAlign="center"
             />
           </View>
@@ -58,7 +84,7 @@ export default function SignIn() {
           </View>
           <CardFooter paddingBottom={35} justifyContent="center">
             <XStack>
-              <Button onPress={() => {}} hoverStyle={{ scale: 0.925 }} width={125}>
+              <Button hoverStyle={{ scale: 0.925 }} width={125} onPress={handleSignIn}>
                 Masuk
               </Button>
             </XStack>
