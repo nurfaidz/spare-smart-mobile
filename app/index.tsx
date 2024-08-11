@@ -1,10 +1,47 @@
 import { useRouter } from 'expo-router';
 import React from 'react';
-import { SafeAreaView } from 'react-native';
+import { Alert, SafeAreaView, StyleSheet, TouchableOpacity } from 'react-native';
 import { CardProps, Image, H2, Card, XStack, Button } from 'tamagui';
+import { Ionicons } from '@expo/vector-icons';
+
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
+const logout = async () => {
+  try {
+    const response = await fetch('http://192.168.212.147:8000/api/auth/logout', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    });
+
+    if (response.ok) {
+      const data = await response.json();
+      if (data.data) {
+        await AsyncStorage.removeItem('userToken');
+        return true;
+      }
+    }
+
+    return false;
+  } catch (error) {
+    console.error('Gagal logout:', error);
+    return false;
+  }
+};
 
 export default function Page() {
   const router = useRouter();
+
+  const handleLogout = async () => {
+    const success = await logout();
+    if (success) {
+      router.push('(auth)/sign-in');
+    } else {
+      Alert.alert('Gagal logout', 'Terjadi kesalahan saat logout');
+    }
+  };
+
   return (
     <SafeAreaView
       width="100%"
@@ -14,6 +51,13 @@ export default function Page() {
         justifyContent: 'center',
         backgroundColor: '#F4F4F4',
       }}>
+      <TouchableOpacity
+        style={styles.icon}
+        onPress={handleLogout}
+        hoverStyle={{ scale: 0.925 }}
+        pressStyle={{ scale: 0.875 }}>
+        <Ionicons name="log-out" size={24} color="white" />
+      </TouchableOpacity>
       <Image source={require('~/assets/logo/bengkel-ucok.png')} style={styles.logo} />
       <XStack $sm={{ flexDirection: 'column' }} paddingTop="$6" space style={styles.center}>
         <DemoCard
@@ -33,12 +77,6 @@ export default function Page() {
           pressStyle={{ scale: 0.875 }}
         />
       </XStack>
-      <Button
-        style={styles.button}
-        onPress={() => router.push('(auth)/sign-in')}
-        hoverStyle={{ scale: 0.925 }}>
-        Sign In
-      </Button>
     </SafeAreaView>
   );
 }
@@ -108,7 +146,7 @@ export function DemoCard1(props: CardProps) {
 const incoming = require('~/assets/img/incoming.png');
 const outgoing = require('~/assets/img/outgoing.png');
 
-const styles = {
+const styles = StyleSheet.create({
   titleHeading: {
     fontSize: 24,
     color: '#2F4F4F',
@@ -143,4 +181,15 @@ const styles = {
     width: '55%',
     height: 100,
   },
-};
+  icon: {
+    position: 'absolute',
+    top: 35,
+    left: 10,
+    width: 30,
+    height: 30,
+    backgroundColor: '#8B0000',
+    borderRadius: 15,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+});
