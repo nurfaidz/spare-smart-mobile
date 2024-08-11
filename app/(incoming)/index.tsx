@@ -5,15 +5,40 @@ import { Dimensions, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Text, Image, XStack, YStack, ScrollView, Spinner, Button } from 'tamagui';
 
+import AsyncStorage from '@react-native-async-storage/async-storage';
+
 export default function Home() {
   const [incomingItems, setIncomingItems] = useState<any>([]);
   const router = useRouter();
 
   useEffect(() => {
-    fetch('http://192.168.1.23:8000/api/incoming-item')
-      .then((response) => response.json())
-      .then((data) => setIncomingItems(data.data));
+    const fetchIncomingItems = async () => {
+      try {
+        const token = await AsyncStorage.getItem('userToken');
+        if (!token) {
+          throw new Error('Token tidak ditemukan');
+        }
+
+        const response = await fetch('http://192.168.212.147:8000/api/incoming-item', {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error('Bermasalah saat mengambil data');
+        }
+
+        const data = await response.json();
+        setIncomingItems(data.data);
+      } catch (error) {
+        console.log('Error saat mengambil data:', error);
+      }
+    };
+
+    fetchIncomingItems();
   }, []);
+
 
   return (
     <SafeAreaView style={{ backgroundColor: '#F5F5F5', height: '100%' }}>

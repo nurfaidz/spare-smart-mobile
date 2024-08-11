@@ -1,24 +1,62 @@
-import { useLocalSearchParams } from 'expo-router';
+import { useLocalSearchParams, useRouter } from 'expo-router';
 import React, { useEffect, useState } from 'react';
 import { Dimensions, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Text, Image, XStack, YStack, ScrollView, Spinner, Separator } from 'tamagui';
 
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Ionicons } from '@expo/vector-icons';
+
+
 export default function Home() {
   const param = useLocalSearchParams();
   const [outgoingItem, setOutgoingItem] = useState<any>([]);
+  const router = useRouter();
 
   useEffect(() => {
-    fetch('http://192.168.1.23:8000/api/outgoing-item/show/' + param.id)
-      .then((response) => response.json())
-      .then((data) => setOutgoingItem(data.data));
+    const fecthOutgoingItem = async () => {
+      try {
+        const token = await AsyncStorage.getItem('userToken');
+        if (!token) {
+          throw new Error('Token tidak ditemukan');
+        }
+
+        const response = await fetch('http://192.168.212.147:8000/api/outgoing-item/show/' + param.id, {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+
+        if (!response.ok) {
+          throw new Error('Bermasalah saat mengambil data');
+        }
+
+        const data = await response.json();
+        setOutgoingItem(data.data);
+      } catch (error) {
+        console.log('Error saat mengambil data:', error);
+      }
+    }
+
+    fecthOutgoingItem();
   }, []);
 
   return (
     <SafeAreaView style={{ backgroundColor: '#F5F5F5', height: '100%' }}>
       <YStack>
-        <View>
+        <View flexDirection="row" justifyContent="space-between">
           <Image source={require('~/assets/logo/bengkel-ucok.png')} style={styles.logo} />
+          <XStack
+            alignItems="center"
+            paddingRight="$3"
+            onPress={() => router.push('(outgoing)')}
+            hoverStyle={{ scale: 0.925 }}
+            pressStyle={{ scale: 0.875 }}>
+            <Ionicons name="arrow-back" size={24} color="black" padding={10} alignSelf="center" />
+            <Text fontSize="$4" fontFamily="$body" alignSelf="center">
+              Kembali
+            </Text>
+          </XStack>
         </View>
       </YStack>
 

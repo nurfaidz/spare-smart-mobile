@@ -1,13 +1,13 @@
-import { useRouter } from 'expo-router';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, { useState } from 'react';
 import { StyleSheet, TextInput } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { Button, Card, CardFooter, Image, Text, View, XStack } from 'tamagui';
 
-export default function SignIn() {
+const SignIn = ({ onLoginSuccess }: { onLoginSuccess: (token: string) => void }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const router = useRouter();
+  const [errorMessage, setErrorMessage] = useState('');
 
   const handleSignIn = () => {
     const data = {
@@ -15,21 +15,41 @@ export default function SignIn() {
       password,
     };
 
-    fetch('http://192.168.1.23:8000/api/auth/login', {
+    fetch('http://192.168.212.147:8000/api/auth/login', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(data),
     })
-      .then((response) => response.json())
-      .then((result) => {
-        console.log('Success:', result);
-        router.push('index');
-        router.setParams({ success: 'true' });
+      .then((response) => {
+        console.log('Response status:', response.status);
+        if (!response.ok) {
+          return response.text().then((text) => {
+            console.error('Response body:', text);
+            throw new Error('Terjadi kesalahan');
+          });
+        }
+        return response.text();
+      })
+      .then((text) => {
+        try {
+          const result = JSON.parse(text);
+          if (result.message) {
+            setErrorMessage(result.message);
+          } else {
+            console.log('Sukses:', result);
+            const token = result.data.token;
+            AsyncStorage.setItem('userToken', token);
+            onLoginSuccess(token);
+          }
+        } catch (error) {
+          setErrorMessage('Terjadi kesalahan, silahkan coba lagi');
+        }
       })
       .catch((error) => {
         console.error('Error:', error);
+        setErrorMessage('Terjadi kesalahan, silahkan coba lagi');
       });
   };
 
@@ -43,18 +63,14 @@ export default function SignIn() {
         backgroundColor: '#FFD564',
       }}>
       <XStack $sm={{ flexDirection: 'column' }} space style={styles.center}>
-        <Card
-          // size="$4"
-          width={330}
-          height={450}
-          // scale={0.8}
-          backgroundColor="#FFFFFF">
+        <Card width={330} height={450} backgroundColor="#FFFFFF">
           <Card.Header>
             <View gap="$4">
               <Image source={require('~/assets/logo/bengkel-ucok.png')} style={styles.logo} />
               <Text textAlign="center" fontSize="$4" fontFamily="$body">
                 Silahkan Masuk
               </Text>
+              {errorMessage ? <Text textAlign="center" marginBottom="$4" color="#eb0523">{errorMessage}</Text> : null}
             </View>
           </Card.Header>
           <View paddingHorizontal={20}>
@@ -84,7 +100,12 @@ export default function SignIn() {
           </View>
           <CardFooter paddingBottom={35} justifyContent="center">
             <XStack>
-              <Button hoverStyle={{ scale: 0.925 }} width={125} onPress={handleSignIn}>
+              <Button
+                hoverStyle={{ scale: 0.925 }}
+                pressStyle={{ scale: 0.875 }}
+                marginTop="$4"
+                width={125}
+                onPress={handleSignIn}>
                 Masuk
               </Button>
             </XStack>
@@ -93,7 +114,7 @@ export default function SignIn() {
       </XStack>
     </SafeAreaView>
   );
-}
+};
 
 const styles = StyleSheet.create({
   logo: {
@@ -126,3 +147,5 @@ const styles = StyleSheet.create({
     backgroundColor: '#FFF',
   },
 });
+
+export default SignIn;

@@ -1,8 +1,9 @@
 import { useFonts } from 'expo-font';
 import { SplashScreen, Stack } from 'expo-router';
-import { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import { TamaguiProvider } from 'tamagui';
 
+import SignIn from './(auth)/sign-in';
 import config from '../tamagui.config';
 
 export default function Layout() {
@@ -10,6 +11,8 @@ export default function Layout() {
     Inter: require('@tamagui/font-inter/otf/Inter-Medium.otf'),
     InterBold: require('@tamagui/font-inter/otf/Inter-Bold.otf'),
   });
+
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
     if (loaded) {
@@ -21,12 +24,16 @@ export default function Layout() {
 
   return (
     <TamaguiProvider config={config}>
-      <Stack
-        initialRouteName="index"
-        screenOptions={{
-          headerShown: false,
-        }}
-      />
+      {isLoggedIn ? (
+        <Stack
+          initialRouteName="index"
+          screenOptions={{
+            headerShown: false,
+          }}
+        />
+      ) : (
+        <SignIn onLoginSuccess={() => setIsLoggedIn(true)} />
+      )}
     </TamaguiProvider>
   );
 }
